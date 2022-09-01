@@ -64,11 +64,11 @@ class Core extends Module {
     val csignals = ListLookup(inst,
         List(ALU_X    , OP1_RS1, OP2_RS2, MEN_X, REN_X, WB_X  ,  MW_X),
         Array(
-            LB    -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, MW_B),
-            LH    -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, MW_H),
-            LW    -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, MW_W),
-            LBU  -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, MW_BU),
-            LHU  -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_X, REN_S, WB_MEM, MW_HU),
+            LB    -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_R, REN_S, WB_MEM, MW_B),
+            LH    -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_R, REN_S, WB_MEM, MW_H),
+            LW    -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_R, REN_S, WB_MEM, MW_W),
+            LBU  -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_R, REN_S, WB_MEM, MW_BU),
+            LHU  -> List(ALU_ADD  , OP1_RS1, OP2_IMI, MEN_R, REN_S, WB_MEM, MW_HU),
             SB    -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , MW_B),
             SH    -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , MW_H),
             SW    -> List(ALU_ADD  , OP1_RS1, OP2_IMS, MEN_S, REN_X, WB_X  , MW_W),
@@ -163,7 +163,7 @@ class Core extends Module {
     ecall_flg := (exe_fun === SP_ECALL && op2_data =/= 34.U(WORD_LEN.W))
     val seg_data = RegInit(0.U(WORD_LEN.W))
     io.data := seg_data
-    seg_data := Mux((exe_fun === SP_ECALL && op2_data === 34.U(WORD_LEN.W)), op2_data, seg_data)
+    seg_data := Mux((exe_fun === SP_ECALL && op2_data === 34.U(WORD_LEN.W)), op1_data, seg_data)
 
     //  MEM Stage
     io.dmem.addr := alu_out
@@ -180,4 +180,19 @@ class Core extends Module {
     when(rf_wen === REN_S) {
         regfile(wb_addr) := wb_data
     }
+
+    //**********************************
+  // Debug
+  printf(p"io.pc      : 0x${Hexadecimal(pc_reg)}\n")
+  printf(p"inst       : 0x${Hexadecimal(inst)}\n")
+  printf(p"gp         : ${regfile(3)}\n")
+  printf(p"rs1_addr   : $rs1_addr\n")
+  printf(p"rs2_addr   : $rs2_addr\n")
+  printf(p"wb_addr    : $wb_addr\n")
+  printf(p"rs1_data   : 0x${Hexadecimal(rs1_data)}\n")
+  printf(p"rs2_data   : 0x${Hexadecimal(rs2_data)}\n")
+  printf(p"wb_data    : 0x${Hexadecimal(wb_data)}\n")
+  printf(p"dmem.addr  : ${io.dmem.addr}\n")
+  printf(p"dmem.rdata : ${io.dmem.rdata}\n")
+  printf("---------\n")
 }

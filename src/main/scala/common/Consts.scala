@@ -50,7 +50,7 @@ object Consts {
   val MEN_LEN = 2
   val MEN_X   = 0.U(MEN_LEN.W)
   val MEN_S   = 1.U(MEN_LEN.W)
-  val MEN_V   = 2.U(MEN_LEN.W)
+  val MEN_R   = 2.U(MEN_LEN.W)
 
   val REN_LEN = 2
   val REN_X   = 0.U(REN_LEN.W)
@@ -74,4 +74,13 @@ object Consts {
   val MW_B   = 3.U(MW_LEN.W)
   val MW_HU  = 4.U(MW_LEN.W)
   val MW_BU  = 5.U(MW_LEN.W)
+
+  // MMIO
+  val DEVICE_BASE = "ha0000000".U(32.W)
+  val MMIO_BASE = "ha0000000".U(32.W)
+  val KBD_ADDR = "ha0000060".U(32.W)
+  val RTC_ADDR = "ha0000048".U(32.W)
+  val VGACTL_ADDR =  "ha0000100".U(32.W)
+  val VGA_ADDR = "ha1000000".U(32.W)
+  val VGA_SIZE = (60 * 80 * 4).U(32.W)
 }

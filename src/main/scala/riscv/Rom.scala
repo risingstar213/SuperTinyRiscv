@@ -15,6 +15,6 @@ class Rom extends Module {
     val io = IO(new ImemPortIo)
 
     val mem = Mem(4096, UInt(32.W))
-    loadMemoryFromFile(mem, "~/Desktop/chisel_project/chisel-template/src/main/resources/risc-v-benchmark_ccab.hex")
+    loadMemoryFromFile(mem, "/home/star/Desktop/chisel_project/chisel-template/src/main/resources/risc-v-benchmark_ccab.hex")
     io.inst := mem(io.addr(31, 2))
 }
